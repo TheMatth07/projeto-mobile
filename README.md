@@ -14,10 +14,12 @@ Funcionalidades:
 - Logout
 
 ## Tecnologias
-- React Native
-- Expo
-- Axios
-- React Navigation
+React Native - framework para desenvolvimento mobile multiplataforma.
+Expo - ferramenta para facilitar o desenvolvimento e execução do app.
+Axios - biblioteca para realizar requisições HTTP à API.
+Expo Router – sistema de navegação baseado em rotas para aplicações React Native.
+Redux Toolkit — gerenciamento de estado global da aplicação.
+React Redux — integração do Redux com componentes React.
 
 
 ## API utilizada
