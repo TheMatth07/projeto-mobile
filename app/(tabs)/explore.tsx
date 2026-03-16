@@ -1,6 +1,6 @@
 import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
-
+import { Platform, StyleSheet, TouchableOpacity } from 'react-native';
+import { router } from "expo-router";
 import { Collapsible } from '@/components/ui/collapsible';
 import { ExternalLink } from '@/components/external-link';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
@@ -10,6 +10,11 @@ import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Fonts } from '@/constants/theme';
 
 export default function TabTwoScreen() {
+
+  function handleLogout() {
+    router.replace("/login");
+  }
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
@@ -30,10 +35,10 @@ export default function TabTwoScreen() {
           Explore
         </ThemedText>
       </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
-      <Collapsible title="File-based routing">
+      <ThemedText>Market Shop Br é um aplicativo de loja desenvolvido em React Native utilizando Expo.</ThemedText>
+      <Collapsible title="Sobre">
         <ThemedText>
-          This app has two screens:{' '}
+           No aplicativo é possível visualizar produtos, acessar os detalhes e adicionar itens ao carrinho.{' '}
           <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
           <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
         </ThemedText>
@@ -45,17 +50,16 @@ export default function TabTwoScreen() {
           <ThemedText type="link">Learn more</ThemedText>
         </ExternalLink>
       </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
+      <Collapsible title="Android, iOS, e web suporte">
         <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
+          Você pode abrir este projeto no Android, iOS e na web. Para abrir a versão web, pressione {' '}
+          <ThemedText type="defaultSemiBold">w</ThemedText> no terminal onde o projeto está sendo executado..
         </ThemedText>
       </Collapsible>
-      <Collapsible title="Images">
+      <Collapsible title="Imagem">
         <ThemedText>
-          For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for
-          different screen densities
+          Para imagens estáticas, você pode usar os sufixos <ThemedText type="defaultSemiBold">@2x</ThemedText> e{' '}
+          <ThemedText type="defaultSemiBold">@3x</ThemedText> para fornecer arquivos para diferentes densidades de tela.
         </ThemedText>
         <Image
           source={require('@/assets/images/react-logo.png')}
@@ -65,25 +69,23 @@ export default function TabTwoScreen() {
           <ThemedText type="link">Learn more</ThemedText>
         </ExternalLink>
       </Collapsible>
-      <Collapsible title="Light and dark mode components">
+      <Collapsible title="Modos claro e escuro">
         <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-          what the user&apos;s current color scheme is, and so you can adjust UI colors accordingly.
+          Este modelo oferece suporte aos modos claro e escuro. O recurso {' '}
+          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> permite inspecionar o esquema de cores&apos;s do usuário e, assim, ajustar as cores da interface de acordo.
         </ThemedText>
         <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
           <ThemedText type="link">Learn more</ThemedText>
         </ExternalLink>
       </Collapsible>
-      <Collapsible title="Animations">
+      <Collapsible title="Animações">
         <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-          the powerful{' '}
+          Este modelo inclui um exemplo de um componente animado.{' '}
+          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> componte usa o poderoso{' '}
           <ThemedText type="defaultSemiBold" style={{ fontFamily: Fonts.mono }}>
-            react-native-reanimated
+            react-native-reanimado
           </ThemedText>{' '}
-          library to create a waving hand animation.
+         Biblioteca para criar uma animação de mão acenando.
         </ThemedText>
         {Platform.select({
           ios: (
@@ -93,6 +95,15 @@ export default function TabTwoScreen() {
             </ThemedText>
           ),
         })}
+      </Collapsible>
+      <Collapsible title="Conta">
+
+      <ThemedText>Sair da aplicação</ThemedText>
+
+      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+        <ThemedText style={styles.logoutText}>Logout</ThemedText>
+      </TouchableOpacity>
+      
       </Collapsible>
     </ParallaxScrollView>
   );
@@ -109,4 +120,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 8,
   },
+
+  logoutButton: {
+    backgroundColor: "#ff4d4d",
+    padding: 12,
+    borderRadius: 8,
+    marginTop: 10,
+    alignItems: "center"
+  },
+
+  logoutText: {
+    color: "#fff",
+    fontWeight: "bold"
+  }
+
 });
