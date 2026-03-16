@@ -1,21 +1,20 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import { useRouter } from "expo-router";
-import { useContext } from "react";
-import { CartContext } from "../context/CartContext";
+import { View, Text, Image, StyleSheet, TouchableOpacity, Alert } from "react-native";
+import { useRouter, useLocalSearchParams } from "expo-router";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../store/cartSlice";
 
-export default function ProductDetailsScreen({ route }) {
+export default function ProductDetailsScreen() {
 
-  const { product } = route.params;
-  console.log(product);
   const router = useRouter();
+  const dispatch = useDispatch();
 
-  const { addToCart } = useContext(CartContext);
+  const params = useLocalSearchParams();
+  const product = JSON.parse(params.product);
 
   function addToCartProduct() {
-    addToCart(product);
-    alert("Produto adicionado ao carrinho!");
+    dispatch(addToCart(product));
+    Alert.alert("Sucesso", "Produto adicionado ao carrinho!");
   }
-  
 
   return (
     <View style={styles.container}>
@@ -45,6 +44,7 @@ export default function ProductDetailsScreen({ route }) {
 }
 
 const styles = StyleSheet.create({
+
   container: {
     flex: 1,
     padding: 20,
@@ -88,4 +88,5 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 16
   }
+
 });

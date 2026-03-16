@@ -1,55 +1,32 @@
-import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity, TextInput, ActivityIndicator } from "react-native";
+import {View,Text,FlatList,Image,StyleSheet,TouchableOpacity,TextInput,ActivityIndicator
+} from "react-native";
+
 import { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
-import api from "../services/api";
+
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProducts } from "../store/productsSlice";
 
 export default function ProductsScreen() {
-  const [products, setProducts] = useState([]);
-  const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("all");
-  const [loading, setLoading] = useState(true);
+
+  const dispatch = useDispatch();
   const router = useRouter();
 
-  async function loadProducts() {
-    try {
+  const { items: products = [], loading } = useSelector(state => state.products);
 
-      let url = "/products";
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("all");
 
-      if (category === "masculino") {
-        url = "/products/category/mens-shirts";
-      }
-
-      if (category === "feminino") {
-        url = "/products/category/womens-dresses";
-      }
-
-      const response = await api.get(url);
-
-      setProducts(response.data);
-
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-}
   useEffect(() => {
-    loadProducts();
-  }, [category]);
+    dispatch(fetchProducts(category));
+  }, [category, dispatch]);
 
-  const filteredProducts = products.filter((product) => {
-
-    const matchSearch = product.title
-      .toLowerCase()
-      .includes(search.toLowerCase());
-
-    const matchCategory =
-      category === "all" ||
-      (category === "masculino" && product.category === "men's clothing") ||
-      (category === "feminino" && product.category === "women's clothing");
-
-    return matchSearch && matchCategory;
-  });
+  // filtro apenas de busca
+  const filteredProducts = Array.isArray(products)
+    ? products.filter((product) =>
+        product.title.toLowerCase().includes(search.toLowerCase())
+      )
+    : [];
 
   if (loading) {
     return (
@@ -62,6 +39,7 @@ export default function ProductsScreen() {
 
   return (
     <View style={styles.container}>
+
       <Text style={styles.title}>Catálogo de Produtos</Text>
 
       <TextInput
@@ -77,11 +55,11 @@ export default function ProductsScreen() {
           <Text style={styles.category}>Todos</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => setCategory("masculino")}>
+        <TouchableOpacity onPress={() => setCategory("mens-shirts")}>
           <Text style={styles.category}>Masculino</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => setCategory("feminino")}>
+        <TouchableOpacity onPress={() => setCategory("womens-dresses")}>
           <Text style={styles.category}>Feminino</Text>
         </TouchableOpacity>
 
@@ -91,12 +69,15 @@ export default function ProductsScreen() {
         data={filteredProducts}
         numColumns={2}
         keyExtractor={(item) => String(item.id)}
+
         ListEmptyComponent={() => (
           <Text style={{ textAlign: "center", marginTop: 20 }}>
             Nenhum produto encontrado.
           </Text>
         )}
+
         renderItem={({ item }) => (
+
           <TouchableOpacity
             style={styles.card}
             onPress={() =>
@@ -106,12 +87,23 @@ export default function ProductsScreen() {
               })
             }
           >
-            <Image source={{ uri: item.image }} style={styles.image} />
+
+            <Image
+              source={{ uri: item.thumbnail }}
+              style={styles.image}
+            />
+
             <Text style={styles.name}>{item.title}</Text>
-            <Text style={styles.price}>${item.price}</Text>
+
+            <Text style={styles.price}>
+              ${item.price}
+            </Text>
+
           </TouchableOpacity>
+
         )}
       />
+
     </View>
   );
 }

@@ -1,10 +1,13 @@
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from "react-native";
-import { useContext } from "react";
-import { CartContext } from "../../src/context/CartContext";
+import { useSelector, useDispatch } from "react-redux";
+import { removeFromCart } from "../../src/store/cartSlice";
 
 export default function CartScreen() {
 
-  const { cart, removeFromCart } = useContext(CartContext);
+  const dispatch = useDispatch();
+
+  const cart = useSelector((state) => state.cart.items);
+
   const total = cart.reduce((sum, item) => sum + item.price, 0);
 
   return (
@@ -32,7 +35,7 @@ export default function CartScreen() {
 
                   <TouchableOpacity
                     style={styles.removeButton}
-                    onPress={() => removeFromCart(item.id)}
+                    onPress={() => dispatch(removeFromCart(item.id))}
                   >
                     <Text style={styles.removeText}>Remover ❌</Text>
                   </TouchableOpacity>

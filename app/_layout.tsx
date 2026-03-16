@@ -4,13 +4,17 @@ import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/use-color-scheme';
-import { CartProvider } from "../src/context/CartContext";
+
+import { Provider } from "react-redux";
+import { store } from "../src/store/store";
 
 export default function RootLayout() {
+
   const colorScheme = useColorScheme();
 
   return (
-    <CartProvider>
+    <Provider store={store}>
+
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
 
         {/* força abrir no login */}
@@ -22,7 +26,9 @@ export default function RootLayout() {
         </Stack>
 
         <StatusBar style="auto" />
+
       </ThemeProvider>
-    </CartProvider>
+
+    </Provider>
   );
 }
